@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://flying-pig.github.io/sitemap.xml 
