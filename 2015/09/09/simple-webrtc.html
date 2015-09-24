@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Your awesome title</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
+  <title>Simple Webrtc</title>
+  <meta name="description" content="Simple WebRTC">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://yourdomain.com/">
+  <link rel="canonical" href="http://yourdomain.com/2015/09/09/simple-webrtc.html">
   <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml" />
 </head>
 
@@ -55,47 +54,45 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">最新文章</h1>
+  <header class="post-header">
+    <h1 class="post-title">Simple Webrtc</h1>
+    <p class="post-meta">Sep 9, 2015</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Sep 9, 2015</span>
+  <article class="post-content">
+    <h1 id="simple-webrtc">Simple WebRTC</h1>
 
-        <h2>
-          <a class="post-link" href="/2015/09/09/simple-webrtc.html">Simple Webrtc</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 9, 2015</span>
+<h2 id="step1">Step1</h2>
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2015/09/09/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
+<ol>
+<li>html-&gt;body中添加<code>&lt;video /&gt;</code>，在JS中用<code>document.querySelector(&quot;video&quot;);</code>可以获取到该标签</li>
+<li>JS中添加如下代码既可以操作视频流</li>
+</ol>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">constrains</span> <span class="o">=</span> <span class="p">{</span><span class="nx">video</span><span class="o">:</span>  <span class="p">{</span><span class="nx">mandatory</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">maxWidth</span><span class="o">:</span> <span class="mi">640</span><span class="p">,</span>
+      <span class="nx">maxHeight</span><span class="o">:</span> <span class="mi">360</span> 
+<span class="p">}}};</span>
 
-        <h2>
-          <a class="post-link" href="/2015/09/08/js-object-life.html">Js Object Life</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
+<span class="kd">function</span> <span class="nx">successCallback</span><span class="p">(</span><span class="nx">localMediaStream</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">stream</span> <span class="o">=</span> <span class="nx">localMediaStream</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">video</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;video&quot;</span><span class="p">);</span>
+    <span class="nx">video</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">localMediaStream</span><span class="p">);</span>
+    <span class="nx">video</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+<span class="p">}</span>
 
-        <h2>
-          <a class="post-link" href="/2015/09/08/my-new-post.html">My New Post</a>
-        </h2>
-      </li>
-    
-  </ul>
+<span class="kd">function</span> <span class="nx">errorCallback</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;navigator.getUserMedia error: &quot;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+<span class="p">}</span>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<span class="nx">getUserMedia</span><span class="p">(</span><span class="nx">constrains</span><span class="p">,</span> <span class="nx">successCallback</span><span class="p">,</span> <span class="nx">errorCallback</span><span class="p">);</span>
+</code></pre></div>
+<p><code>window.stream = localMediaStream;</code> 将stream导出到<strong>window</strong>中，可以省略</p>
+
+<p>这一步只是设置本地视频的基本步骤，显示如何使用本地摄像头，还不牵涉到端对端的交互。</p>
+
+  </article>
 
 </div>
 

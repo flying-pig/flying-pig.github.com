@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Js Object Life</title>
-  <meta name="description" content="Object lifeInterfaceObject.defineProperty(TextCell.prototype, &quot;heightProp&quot;, {    get: function() { return this.text.length; },    set: function(val...">
+  <meta name="description" content="Object lifeprototypeJavaScript是基于原型的面向对象语言，基本上每个Object（对象）都有一个Prototype（原型），在JS中原型也是一种对象，对象中各个属性的都是来源于它，在对象中引用一个属性时，会向上递归的查找原型。Object.prototype是大多数对象的原型">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://yourdomain.com/2015/09/08/js-object-life.html">
@@ -64,6 +64,30 @@
   <article class="post-content">
     <h1 id="object-life">Object life</h1>
 
+<h1 id="prototype">prototype</h1>
+
+<p>JavaScript是基于原型的面向对象语言，基本上每个Object（对象）都有一个Prototype（原型），在JS中原型也是一种对象，对象中各个属性的都是来源于它，在对象中引用一个属性时，会向上递归的查找原型。<br>
+Object.prototype是大多数对象的原型</p>
+
+<ol>
+<li><code>Object.create(prototype)</code>以一个原型为基础来创建一个对象</li>
+<li><code>Object.getPrototypeOf(object)</code>获取对象的原型</li>
+</ol>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">RTextCell</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">TextCell</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">text</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">RTextCell</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">TextCell</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>构造函数通常以大写字母开头。</li>
+</ul>
+
+<p>上面是继承机制的一个实例，RTextCell的构造函数调用其父对象TextCell中的构造函数，这样就继承了TextCell的所有属性。</p>
+
+<p>RTextCell的prototype继承TextCelll的prototype，从RTextCell产生的实例就会可以调用TextCell原型中包含的属性。</p>
+
+<p>无原型的构造函数<code>Object.create(prototype)</code></p>
+
 <h1 id="interface">Interface</h1>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">TextCell</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s2">&quot;heightProp&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="p">},</span>
@@ -75,17 +99,17 @@
 <span class="nx">cell</span><span class="p">.</span><span class="nx">heightProp</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cell</span><span class="p">.</span><span class="nx">heightProp</span><span class="p">);</span>
 <span class="c1">// → 100, 如果没有set，此处输出为2，执行不会报错，简单的忽略该操作</span>
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">Object.defineProperty(Object.prototype, &quot;hiddenNonsense&quot;,
-    {enumerable: false, value: &quot;hi&quot;});
-for (var name in map)
-  console.log(name);
-// → pizza
-// → touched tree
-// 此处不会出现hiddenNonsense，设置enumerable属性为false
-console.log(map.hiddenNonsense);
-// → hi, hiddenNonsense可以访问，只是不再for/in loop中显示
-console.log(&quot;hiddenNonsense&quot; in map)
-// →true, 在in操作中仍然可见
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s2">&quot;hiddenNonsense&quot;</span><span class="p">,</span>
+    <span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;hi&quot;</span><span class="p">});</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">map</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+<span class="c1">// → pizza</span>
+<span class="c1">// → touched tree</span>
+<span class="c1">// 此处不会出现hiddenNonsense，设置enumerable属性为false</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">hiddenNonsense</span><span class="p">);</span>
+<span class="c1">// → hi, hiddenNonsense可以访问，只是不再for/in loop中显示</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hiddenNonsense&quot;</span> <span class="k">in</span> <span class="nx">map</span><span class="p">)</span>
+<span class="c1">// →true, 在in操作中仍然可见</span>
 </code></pre></div>
 <p>三个参数<br>
 Object.defineProperty(<strong>ObjectName</strong>.prototype, <strong>property name</strong>, <strong>options</strong>)<br>
