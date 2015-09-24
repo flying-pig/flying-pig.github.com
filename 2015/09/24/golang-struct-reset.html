@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Your awesome title</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
+  <title>Golang Struct Reset</title>
+  <meta name="description" content="Golang Struct Rest直接零赋值">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://yourdomain.com/">
+  <link rel="canonical" href="http://yourdomain.com/2015/09/24/golang-struct-reset.html">
   <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml" />
 </head>
 
@@ -55,55 +54,38 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">最新文章</h1>
+  <header class="post-header">
+    <h1 class="post-title">Golang Struct Reset</h1>
+    <p class="post-meta">Sep 24, 2015</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Sep 24, 2015</span>
+  <article class="post-content">
+    <h1 id="golang-struct-rest">Golang Struct Rest</h1>
 
-        <h2>
-          <a class="post-link" href="/2015/09/24/golang-struct-reset.html">Golang Struct Reset</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 9, 2015</span>
+<p>直接零赋值</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">type mystrut struct {
+    name string
+    data interface{}
+}
 
-        <h2>
-          <a class="post-link" href="/2015/09/09/simple-webrtc.html">Simple Webrtc</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 9, 2015</span>
+ins := &amp;mystruct{
+    name: &quot;Golang newbie&quot;
+    data: &quot;string data&quot;
+}
 
-        <h2>
-          <a class="post-link" href="/jekyll/update/2015/09/09/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
+ins = &amp;mystruct{}
+</code></pre></div>
+<p>或者用反射(<strong>reflect</strong>)清零</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">func clear(v interface{}) {
+    p := reflect.ValueOf(v).Elem()
+    p.Set(reflect.Zero(p.Type()))
+}
+</code></pre></div>
+<p>如果传入的参数不是指针会直接pannic</p>
 
-        <h2>
-          <a class="post-link" href="/2015/09/08/js-object-life.html">Js Object Life</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/09/08/my-new-post.html">My New Post</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+  </article>
 
 </div>
 
